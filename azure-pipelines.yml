@@ -16,10 +16,7 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
   
-- task: echo $env:ArtifactStagingDirectory
-  displayName: 'show system variables'
-  env:
-    ArtifactStagingDirectory: $(Build.ArtifactStagingDirectory)
+- script: echo $(Build.ArtifactStagingDirectory)
 
 - task: DotNetCoreCLI@2
   inputs:
