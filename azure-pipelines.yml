@@ -11,22 +11,23 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  website.ArtifactStagingDirectory: $(Build.ArtifactStagingDirectory)/artifacts/$(buildConfiguration)
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
   
-- script: echo $(Build.ArtifactStagingDirectory)
+- script: echo $(website.ArtifactStagingDirectory)
 
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
     publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: '--configuration $(BuildConfiguration) --output $(website.ArtifactStagingDirectory)'
     zipAfterPublish: True
 
 # this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    pathtoPublish: '$(website.ArtifactStagingDirectory)' 
     artifactName: 'myWebsiteName'
